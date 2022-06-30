@@ -59,5 +59,6 @@ sudo microk8s kubectl delete pod demo-data ; sudo microk8s kubectl run demo-data
 
 
 Contributors: 
-Ben Blamey [http://www.benblamey.com](http://www.benblamey.com)
-Bipin Patel [https://github.com/BipinPatel](https://github.com/BipinPatel)
+* Ben Blamey [http://www.benblamey.com](http://www.benblamey.com)
+* Bipin Patel [https://github.com/BipinPatel](https://github.com/BipinPatel)
+* Haoyuan Li [https://github.com/Haoyuan-L](https://github.com/Haoyuan-L)
