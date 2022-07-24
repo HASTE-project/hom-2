@@ -1,5 +1,6 @@
 package com.benblamey.hom.manager;
 
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -7,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spark.Response;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,6 +34,7 @@ public class ManagerMainREST {
 
         spark.Spark.get("/", (req, res) -> {
                     logger.info("/");
+                    manager.deserializeTiers();
                     return "The API is running.";
                 });
 

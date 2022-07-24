@@ -1,9 +1,13 @@
 package com.benblamey.hom.manager;
 
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 import java.io.IOException;
 import java.util.Map;
 
+@JacksonXmlRootElement(localName = "tier")
 public abstract class Tier {
+
 
     String outputTopic;
     String uniqueTierId;

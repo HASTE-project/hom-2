@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 // Placeholder for existin Kafka stream repr. the input source for the system.
-public class InputTier  extends Tier {
+public class InputTier extends Tier {
 
     Logger logger = LoggerFactory.getLogger(InputTier.class);
     static final int tierId = 0;
