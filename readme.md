@@ -10,12 +10,11 @@ Part of the HASTE Project. [http://haste.research.it.uu.se/]()
 0. Connect to a fresh VM, forwarding ports to these ports on the server:
   localhost:8001 (for the microK8s dashboard)
   localhost:80 (for the HOM HTTP services)
-  localhost:8088 (for the Kafka-ui)
 See: [https://www.ibm.com/support/pages/what-are-ssh-tunnels-and-how-use-them]()
 
 For example:
 ```
-sudo ssh ubuntu@<host> -i <key-file> -L 80:localhost:80 -L 8001:localhost:8001 -L 8088:localhost:8088
+sudo ssh ubuntu@<host> -i <key-file> -L 80:localhost:80 -L 8001:localhost:8001
 ```
 
 1. Run the install script via curl (or copy-paste the commands [from the script](ubuntu-curl-install.sh))
@@ -44,14 +43,14 @@ aRPM-tgpFtHYAtgT8rk4q3dPbTRtJM5MPnsyaog96m6jTe8FX-e19Ad-OkVoJgdOWzN73iV9VI0WbrtY
 [http://localhost/notebook/](http://localhost/notebook/) (Jupyter) 
 The password is `hej-hom-impl-foo` (Note that access to all the web services, including the notebook, is protected by the SSH login)
 
-[http://127.0.0.1:8088](http://127.0.0.1:8088/) (Kafka-ui) 
+[http://localhost/kafka-gui/](http://localhost/kafka-gui/) (Kafka-ui) 
 
 3. (re)Start the demo application can restart/begin streaming data:
 ```
 sudo microk8s kubectl delete pod demo-data ; sudo microk8s kubectl run demo-data --image benblamey/hom-impl-2.stream-worker2 --attach='true' --stdin --command --image-pull-policy='Always' --restart=Always -- java -cp output.jar -Droot.log.level=DEBUG -Dcom.benblamey.hom.demodata.DemoDataProducer.log.level=DEBUG -Dorg.slf4j.simpleLogger.defaultLogLevel=debug -DKAFKA_BOOTSTRAP_SERVER=kafka-service:9092 com.benblamey.hom.demodata.DemoDataMain
 ```
 
-4. Go into [http://localhost/gui/](the GUI) and add an input tier for `haste-input-data`.
+4. Go into [the GUI](http://localhost/gui/) and add an input tier for `haste-input-data`.
 
 5. Go into Jupyter and run tier-0 notebook to analyze the sample tier, following the video tutorial.
 
