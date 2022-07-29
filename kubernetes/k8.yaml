@@ -147,7 +147,7 @@ metadata:
     name: manager
 spec:
   containers:
-  - image: haoyuan9654/hom-impl-2.manager
+  - image: haoyuan9654/hom-impl-2.manager:latest
     # image is local-only atm.
     imagePullPolicy: Always
     name: manager
