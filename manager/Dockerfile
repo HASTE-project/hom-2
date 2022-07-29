@@ -1,4 +1,6 @@
-FROM ubuntu:hirsute
+FROM ubuntu:jammy
+# clean and update sources
+RUN apt-get -y update
 # Ubuntu 21.04
 
 # with ubuntu:impish, get an error on apt update
@@ -13,11 +15,11 @@ ENV TZ=Europe/Stockholm
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # Always run update when changing package list, see https://docs.docker.com/develop/develop-images/dockerfile_best-practices/
-RUN apt update ; echo 'editthistoforcerun5'
+#RUN apt update ; echo 'editthistoforcerun5'
 
 # install curl
 RUN apt install -y curl
-RUN apt install -y openjdk-16-jre
+RUN apt install -y openjdk-18-jre
 
 RUN java --version
 
@@ -42,7 +44,7 @@ RUN curl -LO "https://dl.k8s.io/release/v1.22.3/bin/linux/amd64/kubectl"
 RUN install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 RUN kubectl version --client
 
-COPY build/libs/hom-impl-2.manager-1.0-SNAPSHOT.jar output.jar
+COPY hom-impl-2.manager-1.0-SNAPSHOT.jar output.jar
 
 # /usr/lib/jvm/jdk-17/bin/java -cp output.jar com.benblamey.hom.manager.ManagerMainTest
 #ENTRYPOINT ["java","-jar","output.jar"]
