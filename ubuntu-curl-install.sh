@@ -5,47 +5,70 @@
 
 # Tested on Ubuntu 20.04
 
-sudo apt update -y ; sudo apt upgrade -y ; sudo snap install microk8s --classic --channel=1.24/stable ; sudo microk8s enable dns ingress rbac
+sudo apt update -y
+sudo apt upgrade -y
 
-sudo apt -y install git ; git clone --depth 1 https://github.com/HASTE-project/hom-2.git
+# See: https://microk8s.io/docs/getting-started
+sudo snap install microk8s --classic --channel=1.24/stable
+# Join the group
+sudo usermod -a -G microk8s $USER
+sudo chown -f -R $USER ~/.kube
+# (we can't use su as per the instructions on ubuntu, so we use newgrp)
+newgrp microk8s
+
+microk8s status --wait-ready
+
+microk8s enable dns ingress rbac
+microk8s status --wait-ready
+
+sudo apt -y install git
+git clone --depth 1 https://github.com/HASTE-project/hom-2.git
 
 # Deploy the dashboard
 # https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/
-sudo microk8s kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.5.0/aio/deploy/recommended.yaml
+microk8s kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.5.0/aio/deploy/recommended.yaml
+microk8s status --wait-ready
 
 # Create a sample user for the dashboard
 # https://github.com/kubernetes/dashboard/blob/master/docs/user/access-control/creating-sample-user.md
-sudo microk8s kubectl apply -f hom-2/kubernetes/dashboard-admin.yaml
+microk8s kubectl apply -f hom-2/kubernetes/dashboard-admin.yaml
+microk8s status --wait-ready
 
 # Create a print a token for the dashboard user
 echo "--- BEGIN DASHBOARD TOKEN ---"
-sudo microk8s kubectl -n kubernetes-dashboard create token admin-user
+microk8s kubectl -n kubernetes-dashboard create token admin-user
 echo "--- END DASHBOARD TOKEN ---"
 
 # Proxy to the dashboard
-sudo microk8s kubectl proxy &
+microk8s kubectl proxy &
 
 
-sudo microk8s kubectl create namespace hom ; sudo microk8s kubectl config set-context --current --namespace=hom
+microk8s kubectl create namespace hom
+microk8s kubectl config set-context --current --namespace=hom
+microk8s status --wait-ready
+
 
 # modify the persistent volume to match the current machine (check the host and path)
 # attempt this with sed..
 sed -i s/hom-2-benblamey/$(hostname)/ hom-2/kubernetes/storage.yaml
 sed -i s+/home/ubuntu/mnt+$(pwd)+ hom-2/kubernetes/storage.yaml
-sudo microk8s kubectl apply -f hom-2/kubernetes/storage.yaml
+
+microk8s kubectl apply -f hom-2/kubernetes/storage.yaml
+microk8s status --wait-ready
 
 # deploy the remaining resources
-sudo microk8s kubectl apply -f hom-2/kubernetes/k8.yaml
+microk8s kubectl apply -f hom-2/kubernetes/k8.yaml
+microk8s status --wait-ready
 
 # See if everything is running:
-sudo microk8s kubectl get all --all-namespaces
+microk8s kubectl get all --all-namespaces
 
 # port forward the web ingress to localhost (in the background):
 # For for ubuntu+microK8s:
-sudo microk8s kubectl port-forward --namespace=ingress daemonset.apps/nginx-ingress-microk8s-controller 80:80 &
+microk8s kubectl port-forward --namespace=ingress daemonset.apps/nginx-ingress-microk8s-controller 8080:80 &
 # For Docker on a Mac:
-# sudo kubectl port-forward --namespace=ingress-nginx service/ingress-nginx-controller 80:80
+# sudo kubectl port-forward --namespace=ingress-nginx service/ingress-nginx-controller 8080:80
 # For something else ?!:
-# sudo microk8s kubectl port-forward web-ingress 80:80 &
+# microk8s kubectl port-forward web-ingress 8080:80 &
 
 echo -- HOM is Ready! --
