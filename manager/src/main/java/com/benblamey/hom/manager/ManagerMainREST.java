@@ -34,7 +34,7 @@ public class ManagerMainREST {
 
         spark.Spark.get("/", (req, res) -> {
                     logger.info("/");
-                    manager.deserializeTiers();
+                    //manager.deserializeTiers();
                     return "The API is running.";
                 });
 

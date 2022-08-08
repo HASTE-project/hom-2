@@ -10,14 +10,12 @@ import java.util.Scanner;
 
 class TierSerialization {
 
-    XmlMapper xmlMapper = new XmlMapper();
-
-
+    XmlMapper m_xmlMapper = new XmlMapper();
 
     public void serializeTiers(List<Tier> tiers) {
         try {
             //String useDir = System.getProperty("user.dir");
-            String xmlStr = xmlMapper.writeValueAsString(tiers);
+            String xmlStr = m_xmlMapper.writeValueAsString(tiers);
             FileWriter fileWriter = new FileWriter("serializedTiers.xml",false);
             fileWriter.write(xmlStr);
             //PrintWriter printWriter = new PrintWriter(fileWriter);
@@ -31,20 +29,20 @@ class TierSerialization {
 
     public List<Tier> deserializeTiers() {
         try {
-            FileInputStream fis = new FileInputStream("serializedTiers.xml");
-            Scanner sc = new Scanner(fis);
-            while(sc.hasNextLine())
-            {
+            //FileInputStream fis = new FileInputStream();
+            FileReader fr = new FileReader("serializedTiers.xml");
+            //Scanner sc = new Scanner(fis);
+//            while(sc.hasNextLine())
                 //XmlMapper xmlMapper = new XmlMapper();
-                List<Tier> tiers = xmlMapper.readValue(sc.nextLine(), ArrayList.class);
-                return tiers;
-            }
-        }catch (IOException e){
-            throw new RuntimeException(e);
-        } catch (FileNotFoundException) {
+            List<Tier> tiers = m_xmlMapper.readValue(fr, ArrayList.class);
+            return tiers;
+
+        } catch (FileNotFoundException e) {
+            // If there is no serialized state, start with an empty set of tiers.
             return new ArrayList<Tier>();
+        } catch (IOException e){
+            throw new RuntimeException(e);
         }
-        return null;
     }
 
 

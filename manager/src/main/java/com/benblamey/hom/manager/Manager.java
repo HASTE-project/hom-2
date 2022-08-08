@@ -28,7 +28,6 @@ public class Manager {
         m_tiers = ts.deserializeTiers();
     }
 
-
     public void cleanup() throws IOException, InterruptedException {
         // Remove existing deployments.
         String deployments = Util.executeShellLogAndBlock(new String[]{"kubectl", "get", "deployments"}).stdOut;
