@@ -1,5 +1,6 @@
 package com.benblamey.hom.manager;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
@@ -8,7 +9,16 @@ import java.util.Map;
 
 //@JacksonXmlRootElement(localName = "tier")
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "__class")
+//@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "__class")
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.EXISTING_PROPERTY,
+        property = "type",
+        visible = true
+)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = JexlDeploymentTier.class, name = "com.benblamey.hom.manager.JexlDeploymentTier")
+})
 public abstract class Tier {
 
 

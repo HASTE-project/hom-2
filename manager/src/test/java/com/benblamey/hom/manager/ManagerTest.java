@@ -1,7 +1,5 @@
 package com.benblamey.hom.manager;
 
-import org.junit.BeforeClass;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -15,7 +13,7 @@ public class ManagerTest {
     @Test
     public void testTiers() throws IOException, InterruptedException {
 
-        boolean deleted = new File("serializedTiers.xml").delete();
+        boolean deleted = new File(TierSerialization.SERIALIZED_TIERS_FILENAME).delete();
 
         Manager m = new Manager();
 
@@ -28,7 +26,10 @@ public class ManagerTest {
         // The XML file has been overwritten several times.
         // Now we instantiate an additional manager, which will trigger deserialization.
 
-        //Manager m2 = new Manager();
+        Manager m2 = new Manager();
+
+        // we get this error:
+        // java.lang.RuntimeException: com.fasterxml.jackson.databind.exc.InvalidDefinitionException: Cannot construct instance of `com.benblamey.hom.manager.JexlDeploymentTier` (no Creators, like default constructor, exist): cannot deserialize from Object value (no delegate- or property-based Creator)
 
         // Now we can assert the number of tiers, their details, etc.
 
