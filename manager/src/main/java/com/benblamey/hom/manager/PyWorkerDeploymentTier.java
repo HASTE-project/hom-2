@@ -101,10 +101,10 @@ public class PyWorkerDeploymentTier extends Tier {
                         "python3",
                         "-m",
                         "nbconvert",
-                        "/data/"+notebookFilenameWithExt,
+                        CommandLineArguments.getDataPath()+notebookFilenameWithExt,
                         "--output",
                         scriptFileNameAndExtension,
-                        "--output-dir=/data/" + PYWORKER_SCRIPT_DIR,
+                        "--output-dir=" + CommandLineArguments.getDataPath() + PYWORKER_SCRIPT_DIR,
                         //"--execute", // execute prior to export
                         "--to",
                         "python"
@@ -121,7 +121,7 @@ public class PyWorkerDeploymentTier extends Tier {
         List<String> args = new ArrayList<String>();
 
         args.addAll(Arrays.asList(
-                "sh -c ./data/nb_worker_context.sh",
+                "sh -c "+CommandLineArguments.getDataPath()+"nb_worker_context.sh",
                 ";",
                 "python3",
                 "-u",
@@ -131,7 +131,7 @@ public class PyWorkerDeploymentTier extends Tier {
                 inputTopic,
                 outputTopic,
                 kafkaApplicationID,
-                "/data/" + PYWORKER_SCRIPT_DIR + "/" + scriptFileNameAndExtension,
+                CommandLineArguments.getDataPath() + PYWORKER_SCRIPT_DIR + "/" + scriptFileNameAndExtension,
                 function));
 
         String yaml = Util.getResourceAsStringFromUTF8("py_worker_tmpl.yaml")

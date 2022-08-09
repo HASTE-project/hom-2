@@ -1,11 +1,14 @@
 package com.benblamey.hom.manager;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 import java.io.IOException;
 import java.util.Map;
 
-@JacksonXmlRootElement(localName = "tier")
+//@JacksonXmlRootElement(localName = "tier")
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, property = "__class")
 public abstract class Tier {
 
 
@@ -31,12 +34,12 @@ public abstract class Tier {
     }
 
     private void init() {
-        String sampleJsonlPath = "/data/sample-tier-" + friendlyTierId + ".jsonl";
+        String sampleJsonlPath = CommandLineArguments.getDataPath()+"sample-tier-" + friendlyTierId + ".jsonl";
         sampler = new TopicSampler(outputTopic, sampleJsonlPath);
 
         try {
             NotebooksFromTemplates.CreateAnalyzeTierNotebookFromTemplate(sampleJsonlPath,
-                    "/data/analyze-tier-" + friendlyTierId + ".ipynb");
+                    CommandLineArguments.getDataPath()+"analyze-tier-" + friendlyTierId + ".ipynb");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

@@ -1,5 +1,8 @@
 package com.benblamey.hom.manager;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
+import com.fasterxml.jackson.databind.jsontype.PolymorphicTypeValidator;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 import java.io.*;
@@ -10,12 +13,18 @@ import java.util.Scanner;
 
 class TierSerialization {
 
-    XmlMapper m_xmlMapper = new XmlMapper();
+    TierSerialization() {
+        m_xmlMapper = new XmlMapper();
+        PolymorphicTypeValidator ptv = BasicPolymorphicTypeValidator.builder().build();
+        m_xmlMapper.activateDefaultTyping(ptv); // default to using DefaultTyping.OBJECT_AND_NON_CONCRETE
+    }
+
+    private final XmlMapper m_xmlMapper;
 
     public void serializeTiers(List<Tier> tiers) {
         try {
             //String useDir = System.getProperty("user.dir");
-            String xmlStr = m_xmlMapper.writeValueAsString(tiers);
+            String xmlStr = m_xmlMapper.writerWithDefaultPrettyPrinter().writeValueAsString(tiers);
             FileWriter fileWriter = new FileWriter("serializedTiers.xml",false);
             fileWriter.write(xmlStr);
             //PrintWriter printWriter = new PrintWriter(fileWriter);
@@ -34,7 +43,9 @@ class TierSerialization {
             //Scanner sc = new Scanner(fis);
 //            while(sc.hasNextLine())
                 //XmlMapper xmlMapper = new XmlMapper();
-            List<Tier> tiers = m_xmlMapper.readValue(fr, ArrayList.class);
+
+            ArrayList<Tier> foo = new ArrayList<Tier>();
+            List<Tier> tiers = m_xmlMapper.readValue(fr, foo.getClass());
             return tiers;
 
         } catch (FileNotFoundException e) {
