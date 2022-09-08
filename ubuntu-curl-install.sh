@@ -30,10 +30,6 @@ echo "--- BEGIN DASHBOARD TOKEN ---"
 microk8s kubectl -n kubernetes-dashboard create token admin-user
 echo "--- END DASHBOARD TOKEN ---"
 
-# Proxy to the dashboard
-microk8s kubectl proxy &
-
-
 microk8s kubectl create namespace hom
 microk8s kubectl config set-context --current --namespace=hom
 microk8s status --wait-ready

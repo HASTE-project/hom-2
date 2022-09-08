@@ -14,10 +14,10 @@ See: [https://www.ibm.com/support/pages/what-are-ssh-tunnels-and-how-use-them]()
 
 For example:
 ```
-sudo ssh ubuntu@<host> -i <key-file> -L 8080:localhost:8080 -L 8001:localhost:8001
+ssh ubuntu@<host> -i <key-file> -L 8080:localhost:80 -L 8001:localhost:8001
 ```
 
-1. Installation steps: 
+1. Installation steps (tested on Ubuntu 20.04): 
 ```
 sudo apt update -y ; sudo apt upgrade -y
 
@@ -29,9 +29,13 @@ sudo snap install microk8s --classic --channel=1.24/stable
 sudo usermod -a -G microk8s $USER ; sudo chown -f -R $USER ~/.kube
 # We can't use su on ubuntu as per the instructions, so we use newgrp to start a new shell logged into the group: 
 newgrp microk8s
+groups
 
-# Run the remaining install script via curl (or copy-paste the commands [from the script](ubuntu-curl-install.sh))
+# Run the remaining install script via curl:
 source <(curl -s https://raw.githubusercontent.com/HASTE-project/hom-2/main/ubuntu-curl-install.sh)
+
+# Start the proxy to the dashboard in the background (also run this if you restart the server:
+microk8s kubectl proxy &
 ```
 
 The token used to access the dashboard is printed in the console, it will look something like this:
