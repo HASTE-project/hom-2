@@ -3,8 +3,6 @@
 Tiered, streamed, data management tool. 
 See the demo: [https://www.dropbox.com/s/lz5l35g7q9l6lli/haste-o-matic-demo-dec.mov?dl=0]()
 
-Part of the HASTE Project. [http://haste.research.it.uu.se/]()
-
 ## DEPLOYMENT INSTRUCTIONS FOR UBUNTU (21.04)
 
 0. Connect to a fresh VM, forwarding ports to these ports on the server:
@@ -70,9 +68,16 @@ sudo microk8s kubectl delete pod demo-data ; sudo microk8s kubectl run demo-data
 
 5. Go into Jupyter and run tier-0 notebook to analyze the sample tier, following the video tutorial.
 
-Issues:
 
-An MTU mismatch can cause issues with using TLS/SSL, for example with pip package installation ('Read timed out').
+## Screenshots:
+
+Kafka UI: 
+<img src="./readme-images/Kafka-UI-Screenshot.png" width="600px">
+
+
+## Known Issues:
+
+An MTU mismatch in Kubernetes can cause issues with using TLS/SSL, for example with pip package installation ('Read timed out').
 
 Check the MTUs like this:
 ´´´
@@ -88,7 +93,12 @@ microk8s kubectl rollout restart daemonset calico-node -n kube-system
 Then the pods/deployments need to be re-created.
 
 
-Contributors: 
+## Contributors 
 * Ben Blamey [http://www.benblamey.com](http://www.benblamey.com)
 * Bipin Patel [https://github.com/BipinPatel](https://github.com/BipinPatel)
 * Haoyuan Li [https://github.com/Haoyuan-L](https://github.com/Haoyuan-L)
+
+
+The HASTE-o-matic tool is part of the HASTE project. [http://haste.research.it.uu.se/]()
+
+<img src="./readme-images/haste-logos.png" width="400px">
