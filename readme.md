@@ -17,8 +17,20 @@ For example:
 sudo ssh ubuntu@<host> -i <key-file> -L 8080:localhost:8080 -L 8001:localhost:8001
 ```
 
-1. Run the install script via curl (or copy-paste the commands [from the script](ubuntu-curl-install.sh))
+1. Installation steps: 
 ```
+sudo apt update -y ; sudo apt upgrade -y
+
+# See: https://microk8s.io/docs/getting-started
+# This creates the microk8s group.
+sudo snap install microk8s --classic --channel=1.24/stable
+
+# Join the group (it must exist).
+sudo usermod -a -G microk8s $USER ; sudo chown -f -R $USER ~/.kube
+# We can't use su on ubuntu as per the instructions, so we use newgrp to start a new shell logged into the group: 
+newgrp microk8s
+
+# Run the remaining install script via curl (or copy-paste the commands [from the script](ubuntu-curl-install.sh))
 source <(curl -s https://raw.githubusercontent.com/HASTE-project/hom-2/main/ubuntu-curl-install.sh)
 ```
 
