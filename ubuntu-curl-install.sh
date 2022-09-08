@@ -58,4 +58,10 @@ microk8s kubectl port-forward --namespace=ingress daemonset.apps/nginx-ingress-m
 # For something else ?!:
 # microk8s kubectl port-forward web-ingress 8080:80 &
 
+microk8s kubectl wait --for=condition=Ready pod/static-web
+microk8s kubectl wait --for=condition=Ready pod/kafka
+microk8s kubectl wait --for=condition=Ready pod/zookeeper
+microk8s kubectl wait --for=condition=Ready pod/notebook
+microk8s kubectl wait --for=condition=Ready pod/manager
+
 echo -- HOM is Ready! --
