@@ -3,8 +3,6 @@
 Tiered, streamed, data management tool. 
 See the demo: [https://www.dropbox.com/s/lz5l35g7q9l6lli/haste-o-matic-demo-dec.mov?dl=0]()
 
-Part of the HASTE Project. [http://haste.research.it.uu.se/]()
-
 ## DEPLOYMENT INSTRUCTIONS FOR UBUNTU (21.04)
 
 0. Connect to a fresh VM, forwarding ports to these ports on the server:
@@ -14,12 +12,28 @@ See: [https://www.ibm.com/support/pages/what-are-ssh-tunnels-and-how-use-them]()
 
 For example:
 ```
-sudo ssh ubuntu@<host> -i <key-file> -L 8080:localhost:8080 -L 8001:localhost:8001
+ssh ubuntu@<host> -i <key-file> -L 8080:localhost:80 -L 8001:localhost:8001
 ```
 
-1. Run the install script via curl (or copy-paste the commands [from the script](ubuntu-curl-install.sh))
+1. Installation steps (tested on Ubuntu 20.04): 
 ```
+sudo apt update -y ; sudo apt upgrade -y
+
+# See: https://microk8s.io/docs/getting-started
+# This creates the microk8s group.
+sudo snap install microk8s --classic --channel=1.24/stable
+
+# Join the group (it must exist).
+sudo usermod -a -G microk8s $USER ; sudo chown -f -R $USER ~/.kube
+# We can't use su on ubuntu as per the instructions, so we use newgrp to start a new shell logged into the group: 
+newgrp microk8s
+groups
+
+# Run the remaining install script via curl:
 source <(curl -s https://raw.githubusercontent.com/HASTE-project/hom-2/main/ubuntu-curl-install.sh)
+
+# Start the proxy to the dashboard in the background (also run this if you restart the server:
+microk8s kubectl proxy &
 ```
 
 The token used to access the dashboard is printed in the console, it will look something like this:
@@ -55,8 +69,36 @@ sudo microk8s kubectl delete pod demo-data ; sudo microk8s kubectl run demo-data
 5. Go into Jupyter and run tier-0 notebook to analyze the sample tier, following the video tutorial.
 
 
+## Screenshots:
 
-Contributors: 
+Kafka UI: 
+<img src="./readme-images/Kafka-UI-Screenshot.png" width="600px">
+
+
+## Known Issues:
+
+An MTU mismatch in Kubernetes can cause issues with using TLS/SSL, for example with pip package installation ('Read timed out').
+
+Check the MTUs like this:
+´´´
+ip a | grep mtu
+´´´
+
+They can be set like this (see: https://projectcalico.docs.tigera.io/networking/mtu):
+´´´
+microk8s kubectl patch configmap/calico-config -n kube-system --type merge  -p '{"data":{"veth_mtu": "1450"}}'
+microk8s kubectl rollout restart daemonset calico-node -n kube-system
+´´´
+
+Then the pods/deployments need to be re-created.
+
+
+## Contributors 
 * Ben Blamey [http://www.benblamey.com](http://www.benblamey.com)
 * Bipin Patel [https://github.com/BipinPatel](https://github.com/BipinPatel)
 * Haoyuan Li [https://github.com/Haoyuan-L](https://github.com/Haoyuan-L)
+
+
+The HASTE-o-matic tool is part of the HASTE project. [http://haste.research.it.uu.se/]()
+
+<img src="./readme-images/haste-logos.png" width="400px">

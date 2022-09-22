@@ -5,16 +5,7 @@
 
 # Tested on Ubuntu 20.04
 
-sudo apt update -y
-sudo apt upgrade -y
 
-# See: https://microk8s.io/docs/getting-started
-sudo snap install microk8s --classic --channel=1.24/stable
-# Join the group
-sudo usermod -a -G microk8s $USER
-sudo chown -f -R $USER ~/.kube
-# (we can't use su as per the instructions on ubuntu, so we use newgrp)
-newgrp microk8s
 
 microk8s status --wait-ready
 
@@ -38,10 +29,6 @@ microk8s status --wait-ready
 echo "--- BEGIN DASHBOARD TOKEN ---"
 microk8s kubectl -n kubernetes-dashboard create token admin-user
 echo "--- END DASHBOARD TOKEN ---"
-
-# Proxy to the dashboard
-microk8s kubectl proxy &
-
 
 microk8s kubectl create namespace hom
 microk8s kubectl config set-context --current --namespace=hom
@@ -70,5 +57,11 @@ microk8s kubectl port-forward --namespace=ingress daemonset.apps/nginx-ingress-m
 # sudo kubectl port-forward --namespace=ingress-nginx service/ingress-nginx-controller 8080:80
 # For something else ?!:
 # microk8s kubectl port-forward web-ingress 8080:80 &
+
+microk8s kubectl wait --for=condition=Ready pod/static-web
+microk8s kubectl wait --for=condition=Ready pod/kafka
+microk8s kubectl wait --for=condition=Ready pod/zookeeper
+microk8s kubectl wait --for=condition=Ready pod/notebook
+microk8s kubectl wait --for=condition=Ready pod/manager
 
 echo -- HOM is Ready! --
