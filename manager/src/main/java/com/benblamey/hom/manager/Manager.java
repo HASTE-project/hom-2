@@ -1,19 +1,31 @@
 package com.benblamey.hom.manager;
 
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
+
+
 
 public class Manager {
 
     Logger logger = LoggerFactory.getLogger(Manager.class);
 
-    private final List<Tier> m_tiers = new ArrayList<Tier>();
+    TierSerialization ts = new TierSerialization();
+
+    private final List<Tier> m_tiers;
 
     public List<Tier> getTiers() {
         return m_tiers;
+    }
+
+
+    public Manager() {
+        m_tiers = ts.deserializeTiers();
     }
 
     public void cleanup() throws IOException, InterruptedException {
@@ -64,6 +76,15 @@ public class Manager {
         String inputTopic = m_tiers.isEmpty() ? "haste-input-data" : m_tiers.get(m_tiers.size() - 1).getOutputTopic();
         int tierIndex = m_tiers.size();
         Tier tier = new JexlDeploymentTier(jexlExpression, tierIndex, inputTopic);
+
+        ts.serializeTiers(m_tiers);
+
+        //re-serialize the current tiers
+//        ts.removeOldTiersXml();
+//        for (int i = 0; i < m_tiers.size(); i++) {
+//            Tier tier1 = m_tiers.get(i);
+//            ts.serializeTier(tier1);
+//        }
         m_tiers.add(tier);
     }
 
@@ -77,6 +98,15 @@ public class Manager {
         int tierIndex = m_tiers.size();
         Tier tier = new PyWorkerDeploymentTier(filenameAndFunction, tierIndex, inputTopic);
         m_tiers.add(tier);
+        //TierSerialization ts = new TierSerialization();
+        //re-serialize the current tiers
+        ts.serializeTiers(m_tiers);
+
+//        ts.removeOldTiersXml();
+//        for (int i = 0; i < m_tiers.size(); i++) {
+//            Tier tier1 = m_tiers.get(i);
+//            ts.serializeTier(tier1);
+//        }
     }
 
     public void removeTier() throws IOException, InterruptedException {
@@ -85,18 +115,29 @@ public class Manager {
         }
 
         Tier tier = m_tiers.get(m_tiers.size() - 1);
-
         tier.remove();
         // TODO - remove old kafka data?
 
         m_tiers.remove(tier);
+        ts.serializeTiers(m_tiers);
+
+//        TierSerialization ts = new TierSerialization();
+//        //re-serialize the current tiers
+//        ts.removeOldTiersXml();
+//        for (int i = 0; i < m_tiers.size(); i++) {
+//            Tier tier1 = m_tiers.get(i);
+//            ts.serializeTier(tier1);
+//        }
     }
 
     public void addBaseTier(String topicID) {
         if (!getTiers().isEmpty()) {
             throw new RuntimeException("Can only add base tier if no existing tiers");
         }
+//        TierSerialization ts = new TierSerialization();
         Tier t = new InputTier(topicID);
+        ts.serializeTiers(m_tiers);
         m_tiers.add(t);
     }
+
 }

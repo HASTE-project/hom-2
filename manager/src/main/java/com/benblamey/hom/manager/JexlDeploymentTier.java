@@ -1,11 +1,13 @@
 package com.benblamey.hom.manager;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.*;
 
+//@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "className")
 public class JexlDeploymentTier extends Tier {
 
     Logger logger = LoggerFactory.getLogger(JexlDeploymentTier.class);

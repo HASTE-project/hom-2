@@ -75,8 +75,8 @@ public class Offsets {
 //        System.out.println(result);
         List<OffsetInfo> offsetInfos = Arrays.stream(result.split("\\n"))
                 .filter(line -> line.startsWith("app-hom-tier-"))
-                .map(line -> Arrays.stream(line.split("\s+")).toList())
-                .map(parts -> new OffsetInfo(parts))
+                .map(line -> Arrays.stream(line.split("\\s+")).toList())
+                .map(parts -> new OffsetInfo((List<String>) parts))
                 .toList();
         return offsetInfos;
     }

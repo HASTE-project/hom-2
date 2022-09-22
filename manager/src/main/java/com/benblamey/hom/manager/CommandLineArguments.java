@@ -8,7 +8,7 @@ public  class CommandLineArguments {
 
     private static String getString(String argumentName, String defaultValue) {
         // returns null if not specified.
-        String result = System.getProperty(argumentName);
+        String result = System.getenv(argumentName);
         if (result == null) {
             System.out.println(argumentName + " defaulted to " + defaultValue);
             return defaultValue;
@@ -22,10 +22,11 @@ public  class CommandLineArguments {
     }
 
     public static String getDataPath() {
-        return getString("DATA_PATH");
+        return getString("DATA_PATH", "/data/");
     }
 
     public static String getMaxWorkerReplicas() {
         return getString("MAX_WORKER_REPLICAS", "3");
     }
+
 }
