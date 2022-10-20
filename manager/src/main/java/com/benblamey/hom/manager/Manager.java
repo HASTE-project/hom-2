@@ -1,10 +1,15 @@
 package com.benblamey.hom.manager;
 
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
+
+
 
 public class Manager {
 
@@ -64,6 +69,13 @@ public class Manager {
         String inputTopic = m_tiers.isEmpty() ? "haste-input-data" : m_tiers.get(m_tiers.size() - 1).getOutputTopic();
         int tierIndex = m_tiers.size();
         Tier tier = new JexlDeploymentTier(jexlExpression, tierIndex, inputTopic);
+        TierSerialization ts = new TierSerialization();
+        //re-serialize the current tiers
+        ts.removeOldTiersXml();
+        for (int i = 0; i < m_tiers.size(); i++) {
+            Tier tier1 = m_tiers.get(i);
+            ts.serializeTier(tier1);
+        }
         m_tiers.add(tier);
     }
 
@@ -77,6 +89,13 @@ public class Manager {
         int tierIndex = m_tiers.size();
         Tier tier = new PyWorkerDeploymentTier(filenameAndFunction, tierIndex, inputTopic);
         m_tiers.add(tier);
+        TierSerialization ts = new TierSerialization();
+        //re-serialize the current tiers
+        ts.removeOldTiersXml();
+        for (int i = 0; i < m_tiers.size(); i++) {
+            Tier tier1 = m_tiers.get(i);
+            ts.serializeTier(tier1);
+        }
     }
 
     public void removeTier() throws IOException, InterruptedException {
@@ -85,18 +104,77 @@ public class Manager {
         }
 
         Tier tier = m_tiers.get(m_tiers.size() - 1);
-
         tier.remove();
         // TODO - remove old kafka data?
 
         m_tiers.remove(tier);
+        TierSerialization ts = new TierSerialization();
+        //re-serialize the current tiers
+        ts.removeOldTiersXml();
+        for (int i = 0; i < m_tiers.size(); i++) {
+            Tier tier1 = m_tiers.get(i);
+            ts.serializeTier(tier1);
+        }
     }
 
     public void addBaseTier(String topicID) {
         if (!getTiers().isEmpty()) {
             throw new RuntimeException("Can only add base tier if no existing tiers");
         }
+        TierSerialization ts = new TierSerialization();
         Tier t = new InputTier(topicID);
+        ts.serializeTier(t);
         m_tiers.add(t);
     }
+
+    //deserialize tiers when the manager is restarted
+    public void deserializeTiers() {
+        if (m_tiers.isEmpty()) {
+            try {
+                FileInputStream fis = new FileInputStream("serializedTiers.xml");
+                Scanner sc = new Scanner(fis);
+                while(sc.hasNextLine())
+                {
+                    XmlMapper xmlMapper = new XmlMapper();
+                    Tier tier = xmlMapper.readValue(sc.nextLine(), Tier.class);
+                    m_tiers.add(tier);
+                }
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+    }
 }
+
+class TierSerialization {
+    public void serializeTier(Tier tier) {
+        try {
+            String xmlStr = null;
+            XmlMapper xmlMapper = new XmlMapper();
+            //String useDir = System.getProperty("user.dir");
+            xmlStr = xmlMapper.writeValueAsString(tier);
+            FileWriter fileWriter = new FileWriter("serializedTiers.xml",true);
+            PrintWriter printWriter = new PrintWriter(fileWriter);
+            printWriter.println(xmlStr);
+            printWriter.close();
+
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void removeOldTiersXml() {
+        try {
+            File f = new File("serializedTiers.xml");
+            if (f.delete()){
+                System.out.println(f.getName()+" deleted!");
+            }
+            else {
+                System.out.println("Failed!");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+}
+
