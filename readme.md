@@ -92,8 +92,6 @@ microk8s kubectl rollout restart daemonset calico-node -n kube-system
 
 Then the pods/deployments need to be re-created.
 
-To enable multi-arch docker builds you need to run
-docker buildx create --name mybuilder --use --bootstrap
 
 
 

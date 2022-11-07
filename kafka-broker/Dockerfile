@@ -27,11 +27,12 @@ RUN apt install -y dnsutils
 
 RUN curl https://downloads.apache.org/kafka/3.3.1/kafka_2.13-3.3.1.tgz -o kafka.tgz
 RUN tar -xzf kafka.tgz
+RUN mv kafka_2.13-3.3.1 kafka
 
+WORKDIR /kafka
 # this would be just a comment to say which port it listens on!
 #EXPOSE 29092
 
-WORKDIR /kafka
 
 COPY log4j.properties config/log4j.properties
 #CMD ["bash"]

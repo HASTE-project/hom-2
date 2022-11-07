@@ -27,7 +27,10 @@ sudo kubectl port-forward --namespace=ingress-nginx service/ingress-nginx-contro
 
 kubectl create namespace hom
 kubectl config set-context --current --namespace=hom
-kubectl apply -f kubernetes/k8.yaml
+microk8s kubectl apply -f kubernetes/k8.yaml
 
 
+To enable multi-arch docker builds you need to run
+docker buildx create --name mybuilder --use --bootstrap
 
+commandLine "docker", "build", "--platform", "linux/amd64", "--tag", "benblamey/${project.name}:latest", "."

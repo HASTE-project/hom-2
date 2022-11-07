@@ -22,7 +22,7 @@ test {
 task buildDockerImage(type:Exec) {
     workingDir "$projectDir"
     errorOutput(System.out)
-    commandLine "docker", "buildx", "build", "--platform", "linux/amd64,linux/arm64", "--tag", "benblamey/${project.name}:latest", "."
+    commandLine "docker", "build", "--platform", "linux/amd64", "--tag", "benblamey/${project.name}:latest", "."
 }
 
 task pushDockerImage(type:Exec) {

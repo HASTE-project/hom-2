@@ -1,5 +1,5 @@
 FROM ubuntu:jammy
-# Ubuntu 21.04
+
 
 # with ubuntu:impish, get an error on apt update
 # Problem executing scripts APT::Update::Post-Invoke 'rm -f /var/cache/apt/archives/*.deb /var/cache/apt/archives/partial/*.deb /var/cache/apt/*.bin || true'

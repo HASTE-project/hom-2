@@ -1,4 +1,4 @@
 #!/bin/sh
 
-docker build -t benblamey/hom-impl-2.notebook:latest .
-docker push benblamey/hom-impl-2.notebook:latest
+docker build --platform linux/amd64 --tag benblamey/hom-impl-2.notebook:latest .
+docker push --tag benblamey/hom-impl-2.notebook:latest
