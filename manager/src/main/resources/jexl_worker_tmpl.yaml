@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: $container_name
-        image: benblamey/hom-impl-2.stream-worker2
+        image: benblamey/hom-impl-2.jexl-stream-worker
         # image is local-only atm.
         imagePullPolicy: Always
         command: [$cmd]

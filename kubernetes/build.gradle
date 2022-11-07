@@ -4,7 +4,7 @@ version '1.0-SNAPSHOT'
 task undeployK8(type:Exec) {
     workingDir "$projectDir"
     commandLine "kubectl","delete","pod","kafka"
-    commandLine "kubectl","delete","pod","stream-worker2"
+    commandLine "kubectl","delete","pod","jexl-stream-worker"
 }
 
 task deployK8(type:Exec) {

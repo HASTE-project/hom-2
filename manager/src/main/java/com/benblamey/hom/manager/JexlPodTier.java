@@ -90,7 +90,7 @@ public class JexlPodTier extends Tier {
                 // pod name
                 podname,
                 "--image",
-                "hom-impl-2.stream-worker2",
+                "hom-impl-2.jexl-stream-worker",
                 "--command",
                 // Image is currently local-only for now.
                 "--image-pull-policy=Never",

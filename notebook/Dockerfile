@@ -1,4 +1,4 @@
-FROM ubuntu:hirsute
+FROM ubuntu:jammy
 # Ubuntu 21.04
 
 # with ubuntu:impish, get an error on apt update
@@ -22,13 +22,10 @@ RUN apt install -y curl
 # Lines above are common to all Dockerfiles in the project.
 ######
 
-RUN apt install -y python3.10-dev
-RUN apt install -y python3-pip
-RUN python3 -m pip install jupyterlab==3.2.4
-
-# These python packages are used in the example notebooks.
-RUN python3 -m pip install pandas==1.3.4
-RUN python3 -m pip install matplotlib==3.5.0
+RUN apt install -y python3.10-dev python3-pip
+RUN python3 -m pip install jupyterlab==3.2.4 \
+    pandas==1.3.4 \
+    matplotlib==3.5.0
 
 CMD ["/bin/bash","-ec","while true; do echo -n .; sleep 1; done"]
 

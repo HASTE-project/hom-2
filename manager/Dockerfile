@@ -1,5 +1,4 @@
-FROM ubuntu:hirsute
-# Ubuntu 21.04
+FROM ubuntu:jammy
 
 # with ubuntu:impish, get an error on apt update
 # Problem executing scripts APT::Update::Post-Invoke 'rm -f /var/cache/apt/archives/*.deb /var/cache/apt/archives/partial/*.deb /var/cache/apt/*.bin || true'
@@ -16,25 +15,25 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN apt update ; echo 'editthistoforcerun5'
 
 # install curl
-RUN apt install -y curl
-RUN apt install -y openjdk-16-jre
+RUN apt install -y curl  \
+    openjdk-17-jre
 
 RUN java --version
 
 # Lines above are common to all Dockerfiles in the project.
 ######
 
+RUN apt install -y python3.10-dev \
+    python3-pip
 
-RUN apt install -y python3.10-dev
-RUN apt install -y python3-pip
-
-RUN python3 -m pip install jupyterlab==3.2.4
-RUN python3 -m pip install nbconvert==6.3.0
+RUN python3 -m pip install jupyterlab==3.2.4 \
+    nbconvert==6.3.0
 
 
-RUN curl -O https://dlcdn.apache.org/kafka/3.0.1/kafka_2.13-3.0.1.tgz
-RUN tar -xzf kafka_2.13-3.0.1.tgz
-# /kafka_2.13-3.0.1
+RUN curl https://downloads.apache.org/kafka/3.3.1/kafka_2.13-3.3.1.tgz -o kafka.tgz
+RUN tar -xzf kafka.tgz
+
+
 
 # install kubectl, instructions from kubernetes website
 #RUN curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"

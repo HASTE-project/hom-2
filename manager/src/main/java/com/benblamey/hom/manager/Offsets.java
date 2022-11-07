@@ -57,7 +57,7 @@ public class Offsets {
 
     static List<OffsetInfo> fetchOffsets() {
         String[] args = {
-                "/kafka_2.13-3.0.1/bin/kafka-consumer-groups.sh",
+                "/kafka/bin/kafka-consumer-groups.sh",
                 "--bootstrap-server",
                 CommandLineArguments.getKafkaBootstrapServerConfig(),
                 "--describe",

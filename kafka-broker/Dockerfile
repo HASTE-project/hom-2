@@ -1,5 +1,4 @@
-FROM ubuntu:hirsute
-# Ubuntu 21.04
+FROM ubuntu:jammy
 
 # with ubuntu:impish, get an error on apt update
 # Problem executing scripts APT::Update::Post-Invoke 'rm -f /var/cache/apt/archives/*.deb /var/cache/apt/archives/partial/*.deb /var/cache/apt/*.bin || true'
@@ -16,8 +15,8 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN apt update ; echo 'editthistoforcerun'
 
 # install curl
-RUN apt install -y curl
-RUN apt install -y openjdk-16-jre
+RUN apt install -y curl \
+    openjdk-17-jre
 
 RUN java --version
 
@@ -26,15 +25,13 @@ RUN java --version
 
 RUN apt install -y dnsutils
 
-
-RUN curl -O https://dlcdn.apache.org/kafka/3.0.1/kafka_2.13-3.0.1.tgz
-
-RUN tar -xzf kafka_2.13-3.0.1.tgz
+RUN curl https://downloads.apache.org/kafka/3.3.1/kafka_2.13-3.3.1.tgz -o kafka.tgz
+RUN tar -xzf kafka.tgz
 
 # this would be just a comment to say which port it listens on!
 #EXPOSE 29092
 
-WORKDIR /kafka_2.13-3.0.1
+WORKDIR /kafka
 
 COPY log4j.properties config/log4j.properties
 #CMD ["bash"]

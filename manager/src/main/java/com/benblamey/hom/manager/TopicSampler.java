@@ -112,7 +112,7 @@ public class TopicSampler {
                     new String[]{
                             "bash",
                             "-ec",
-                            "/kafka_2.13-3.0.1/bin/kafka-consumer-groups.sh",
+                            "/kafka/bin/kafka-consumer-groups.sh",
                             "--bootstrap-server",
                             CommandLineArguments.getKafkaBootstrapServerConfig(),
                             "--delete",

@@ -3,7 +3,7 @@
 Tiered, streamed, data management tool. 
 See the demo: [https://www.dropbox.com/s/lz5l35g7q9l6lli/haste-o-matic-demo-dec.mov?dl=0]()
 
-## DEPLOYMENT INSTRUCTIONS FOR UBUNTU (21.04)
+## DEPLOYMENT INSTRUCTIONS FOR UBUNTU (22.04)
 
 0. Connect to a fresh VM, forwarding ports to these ports on the server:
   localhost:8001 (for the microK8s dashboard)
@@ -15,7 +15,7 @@ For example:
 ssh ubuntu@<host> -i <key-file> -L 8080:localhost:80 -L 8001:localhost:8001
 ```
 
-1. Installation steps (tested on Ubuntu 20.04): 
+1. Installation steps (tested on Ubuntu 22.04): 
 ```
 sudo apt update -y ; sudo apt upgrade -y
 
@@ -32,7 +32,7 @@ groups
 # Run the remaining install script via curl:
 source <(curl -s https://raw.githubusercontent.com/HASTE-project/hom-2/main/ubuntu-curl-install.sh)
 
-# Start the proxy to the dashboard in the background (also run this if you restart the server:
+# Start the proxy to the dashboard in the background (also run this if you restart the VM:
 microk8s kubectl proxy &
 ```
 
@@ -61,7 +61,7 @@ The password is `hej-hom-impl-foo` (Note that access to all the web services, in
 
 3. (re)Start the demo application can restart/begin streaming data:
 ```
-sudo microk8s kubectl delete pod demo-data ; sudo microk8s kubectl run demo-data --image benblamey/hom-impl-2.stream-worker2 --attach='true' --stdin --command --image-pull-policy='Always' --restart=Always -- java -cp output.jar -Droot.log.level=DEBUG -Dcom.benblamey.hom.demodata.DemoDataProducer.log.level=DEBUG -Dorg.slf4j.simpleLogger.defaultLogLevel=debug -DKAFKA_BOOTSTRAP_SERVER=kafka-service:9092 com.benblamey.hom.demodata.DemoDataMain
+sudo microk8s kubectl delete pod demo-data ; sudo microk8s kubectl run demo-data --image benblamey/hom-impl-2.jexl-stream-worker --attach='true' --stdin --command --image-pull-policy='Always' --restart=Always -- java -cp output.jar -Droot.log.level=DEBUG -Dcom.benblamey.hom.demodata.DemoDataProducer.log.level=DEBUG -Dorg.slf4j.simpleLogger.defaultLogLevel=debug -DKAFKA_BOOTSTRAP_SERVER=kafka-service:9092 com.benblamey.hom.demodata.DemoDataMain
 ```
 
 4. Go into [the GUI](http://localhost:8080/gui/) and add an input tier for `haste-input-data`.

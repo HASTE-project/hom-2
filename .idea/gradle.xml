@@ -5,12 +5,19 @@
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
         <option name="distributionType" value="DEFAULT_WRAPPED" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/kafka" />
-        <option name="gradleHome" value="/usr/local/Cellar/gradle/4.9" />
-        <option name="gradleJvm" value="16" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/jexl-stream-worker" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$/kafka" />
+            <option value="$PROJECT_DIR$/jexl-stream-worker" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/kafka-broker" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/kafka-broker" />
           </set>
         </option>
       </GradleProjectSettings>
@@ -33,18 +40,6 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$/manager" />
-          </set>
-        </option>
-      </GradleProjectSettings>
-      <GradleProjectSettings>
-        <option name="delegatedBuild" value="true" />
-        <option name="testRunner" value="GRADLE" />
-        <option name="distributionType" value="DEFAULT_WRAPPED" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/stream-worker2" />
-        <option name="gradleJvm" value="16" />
-        <option name="modules">
-          <set>
-            <option value="$PROJECT_DIR$/stream-worker2" />
           </set>
         </option>
       </GradleProjectSettings>

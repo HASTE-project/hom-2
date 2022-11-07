@@ -3,12 +3,12 @@
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$/core" />
-    <file type="web" url="file://$PROJECT_DIR$/kafka" />
-    <file type="web" url="file://$PROJECT_DIR$/kafka/kubernetes" />
+    <file type="web" url="file://$PROJECT_DIR$/jexl-stream-worker" />
+    <file type="web" url="file://$PROJECT_DIR$/kafka-broker" />
+    <file type="web" url="file://$PROJECT_DIR$/kafka-broker/kubernetes" />
     <file type="web" url="file://$PROJECT_DIR$/kubernetes" />
     <file type="web" url="file://$PROJECT_DIR$/manager" />
     <file type="web" url="file://$PROJECT_DIR$/stream-worker" />
-    <file type="web" url="file://$PROJECT_DIR$/stream-worker2" />
   </component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">
