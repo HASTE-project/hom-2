@@ -56,7 +56,7 @@ task buildDockerImage(type:Exec) {
     errorOutput(System.out)
     System.out.println("${project.name}")
 
-    commandLine "docker", "build", "-t", "benblamey/${project.name}:latest",  "."
+    commandLine "docker", "buildx", "build", "--platform", "linux/amd64,linux/arm64", "--tag", "benblamey/${project.name}:latest", "."
 }
 buildDockerImage.dependsOn jar
 
