@@ -30,9 +30,10 @@ RUN python3 -m pip install jupyterlab==3.2.4 \
     nbconvert==6.3.0
 
 
-RUN curl https://downloads.apache.org/kafka/3.3.1/kafka_2.13-3.3.1.tgz -o kafka.tgz
+RUN curl https://archive.apache.org/dist/kafka/3.3.1/kafka_2.13-3.3.1.tgz -o kafka.tgz
 RUN tar -xzf kafka.tgz
-
+RUN rm kafka.tgz
+RUN mv /kafka_2.13-3.3.1 /kafka
 
 
 # install kubectl, instructions from kubernetes website

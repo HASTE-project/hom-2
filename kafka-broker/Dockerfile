@@ -25,7 +25,7 @@ RUN java --version
 
 RUN apt install -y dnsutils
 
-RUN curl https://downloads.apache.org/kafka/3.3.1/kafka_2.13-3.3.1.tgz -o kafka.tgz
+RUN curl https://archive.apache.org/dist/kafka/3.3.1/kafka_2.13-3.3.1.tgz -o kafka.tgz
 RUN tar -xzf kafka.tgz
 RUN mv kafka_2.13-3.3.1 kafka
 

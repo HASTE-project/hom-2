@@ -80,15 +80,15 @@ Kafka UI:
 An MTU mismatch in Kubernetes can cause issues with using TLS/SSL, for example with pip package installation ('Read timed out').
 
 Check the MTUs like this:
-´´´
+```
 ip a | grep mtu
-´´´
+```
 
 They can be set like this (see: https://projectcalico.docs.tigera.io/networking/mtu):
-´´´
+```
 microk8s kubectl patch configmap/calico-config -n kube-system --type merge  -p '{"data":{"veth_mtu": "1450"}}'
 microk8s kubectl rollout restart daemonset calico-node -n kube-system
-´´´
+```
 
 Then the pods/deployments need to be re-created.
 
